@@ -12,6 +12,8 @@ import (
 
 type ClientOptions struct {
 	Url          string
+	ClientId     string
+	ClientSecret string
 	AccessToken  string
 	RefreshToken string
 }
@@ -102,11 +104,11 @@ func (api *Client) doRequest(resourceUrl string, requestParams requestOptions, r
 func (api *Client) RefreshToken() (*map[string]interface{}, error) {
 	result := new(map[string]interface{})
 	request := map[string]string{
-		"client_id":     "7c08f8a9-c49d-4378-890c-a6dba79f88f9",
-		"client_secret": "SDqfNBxxk98zq6CRjLN7tHeyVHS0EAwlQkirAx0i71s81N9fXGPlTlkoxIOZd6Rg",
+		"client_id":     api.options.ClientId,
+		"client_secret": api.options.ClientSecret,
 		"grant_type":    "refresh_token",
 		"refresh_token": api.options.RefreshToken,
-		"redirect_uri":  "https://ddamosmartheadru.amocrm.ru",
+		"redirect_uri":  api.options.Url,
 	}
 
 	err := api.doRequest("/oauth2/access_token", requestOptions{
