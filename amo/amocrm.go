@@ -1,4 +1,4 @@
-package go_amo
+package amo
 
 import (
 	"fmt"
