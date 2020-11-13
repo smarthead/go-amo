@@ -101,8 +101,8 @@ func (api *Client) doRequest(resourceUrl string, requestParams requestOptions, r
 	return nil
 }
 
-func (api *Client) RefreshToken() (*map[string]interface{}, error) {
-	result := new(map[string]interface{})
+func (api *Client) RefreshToken() (*OauthTokenResponse, error) {
+	result := new(OauthTokenResponse)
 	request := map[string]string{
 		"client_id":     api.options.ClientId,
 		"client_secret": api.options.ClientSecret,
