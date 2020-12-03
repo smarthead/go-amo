@@ -2,27 +2,27 @@ package models
 
 type Lead struct {
 	ID                     int                  `json:"id"`
-	Name                   string               `json:"name"`
-	Price                  int                  `json:"price"`
-	ResponsibleUserID      int                  `json:"responsible_user_id"`
-	GroupID                int                  `json:"group_id"`
-	StatusID               int                  `json:"status_id"`
-	PipelineID             int                  `json:"pipeline_id"`
+	Name                   string               `json:"name,omitempty"`
+	Price                  int                  `json:"price,omitempty"`
+	ResponsibleUserID      int                  `json:"responsible_user_id,omitempty"`
+	GroupID                int                  `json:"group_id,omitempty"`
+	StatusID               int                  `json:"status_id,omitempty"`
+	PipelineID             int                  `json:"pipeline_id,omitempty"`
 	LossReasonID           int                  `json:"loss_reason_id,omitempty"`
-	SourceID               interface{}          `json:"source_id"`
-	CreatedBy              int                  `json:"created_by"`
-	UpdatedBy              int                  `json:"updated_by"`
-	CreatedAt              int                  `json:"created_at"`
-	UpdatedAt              int                  `json:"updated_at"`
-	ClosedAt               int                  `json:"closed_at"`
-	ClosestTaskAt          interface{}          `json:"closest_task_at"`
-	IsDeleted              bool                 `json:"is_deleted"`
-	CustomFieldsValues     []*CustomFieldsValue `json:"custom_fields_values"`
-	Score                  interface{}          `json:"score"`
-	AccountID              int                  `json:"account_id"`
-	IsPriceModifiedByRobot bool                 `json:"is_price_modified_by_robot"`
-	Links                  Links                `json:"_links"`
-	Embedded               Embedded             `json:"_embedded"`
+	SourceID               interface{}          `json:"source_id,omitempty"`
+	CreatedBy              int                  `json:"created_by,omitempty"`
+	UpdatedBy              int                  `json:"updated_by,omitempty"`
+	CreatedAt              int                  `json:"created_at,omitempty"`
+	UpdatedAt              int                  `json:"updated_at,omitempty"`
+	ClosedAt               int                  `json:"closed_at,omitempty"`
+	ClosestTaskAt          interface{}          `json:"closest_task_at,omitempty"`
+	IsDeleted              bool                 `json:"is_deleted,omitempty"`
+	CustomFieldsValues     []*CustomFieldsValue `json:"custom_fields_values,omitempty"`
+	Score                  interface{}          `json:"score,omitempty"`
+	AccountID              int                  `json:"account_id,omitempty"`
+	IsPriceModifiedByRobot bool                 `json:"is_price_modified_by_robot,omitempty"`
+	Links                  Links                `json:"_links,omitempty"`
+	Embedded               Embedded             `json:"_embedded,omitempty"`
 }
 
 type Self struct {
