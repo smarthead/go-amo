@@ -82,6 +82,6 @@ type Value struct {
 
 type CustomFieldsValue struct {
 	FieldID   int      `json:"field_id"`
-	FieldCode string   `json:"field_code"`
+	FieldCode string   `json:"field_code,omitempty"`
 	Values    []*Value `json:"values"`
 }
