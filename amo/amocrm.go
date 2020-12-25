@@ -25,7 +25,7 @@ func (client *AmoClient) GetLead(leadId string, query string) (*models.Lead, err
 	deal := new(models.Lead)
 	resource := fmt.Sprintf("/api/v4/leads/%s", leadId)
 	if len(query) != 0 {
-		resource = resource + "/?" + query
+		resource = resource + "?" + query
 	}
 
 	err := client.api.Get(resource, deal)
@@ -47,7 +47,7 @@ func (client *AmoClient) GetCompany(companyId string, query string) (*models.Lea
 	deal := new(models.Lead)
 	resource := fmt.Sprintf("/api/v4/companies/%s", companyId)
 	if len(query) != 0 {
-		resource = resource + "/?" + query
+		resource = resource + "?" + query
 	}
 
 	err := client.api.Get(resource, deal)
@@ -58,7 +58,7 @@ func (client *AmoClient) GetContact(contactId string, query string) (*models.Lea
 	deal := new(models.Lead)
 	resource := fmt.Sprintf("/api/v4/contacts/%s", contactId)
 	if len(query) != 0 {
-		resource = resource + "/?" + query
+		resource = resource + "?" + query
 	}
 
 	err := client.api.Get(resource, deal)
