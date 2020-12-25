@@ -21,9 +21,14 @@ func NewAmoClient(options *api.ClientOptions) (*AmoClient, error) {
 	}, nil
 }
 
-func (client *AmoClient) GetLead(leadId string) (*models.Lead, error) {
+func (client *AmoClient) GetLead(leadId string, query string) (*models.Lead, error) {
 	deal := new(models.Lead)
-	err := client.api.Get(fmt.Sprintf("/api/v4/leads/%s", leadId), deal)
+	resource := fmt.Sprintf("/api/v4/leads/%s", leadId)
+	if len(query) != 0 {
+		resource = resource + "/?" + query
+	}
+
+	err := client.api.Get(resource, deal)
 	return deal, err
 }
 
@@ -36,4 +41,26 @@ func (client *AmoClient) GetUser(userId string) (*models.User, error) {
 func (client *AmoClient) UpdateLead(lead *models.Lead) error {
 	err := client.api.Patch(fmt.Sprintf("/api/v4/leads/%d", lead.ID), lead, nil)
 	return err
+}
+
+func (client *AmoClient) GetCompany(companyId string, query string) (*models.Lead, error) {
+	deal := new(models.Lead)
+	resource := fmt.Sprintf("/api/v4/companies/%s", companyId)
+	if len(query) != 0 {
+		resource = resource + "/?" + query
+	}
+
+	err := client.api.Get(resource, deal)
+	return deal, err
+}
+
+func (client *AmoClient) GetContact(contactId string, query string) (*models.Lead, error) {
+	deal := new(models.Lead)
+	resource := fmt.Sprintf("/api/v4/contacts/%s", contactId)
+	if len(query) != 0 {
+		resource = resource + "/?" + query
+	}
+
+	err := client.api.Get(resource, deal)
+	return deal, err
 }
