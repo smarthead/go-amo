@@ -1,4 +1,4 @@
-package models
+package leads
 
 type Lead struct {
 	ID                     int                  `json:"id"`
