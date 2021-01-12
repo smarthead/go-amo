@@ -10,7 +10,7 @@ import (
 )
 
 type AmoClient struct {
-	api *api.Client
+	Api *api.Client
 }
 
 func NewAmoClient(options *api.ClientOptions) (*AmoClient, error) {
@@ -20,8 +20,19 @@ func NewAmoClient(options *api.ClientOptions) (*AmoClient, error) {
 	}
 
 	return &AmoClient{
-		api: apiClient,
+		Api: apiClient,
 	}, nil
+}
+
+func (client *AmoClient) updateEntity(url string, id int, body interface{}) error {
+	err := client.Api.Patch(fmt.Sprintf("%s/%d", url, id), body, nil)
+	return err
+}
+
+func (client *AmoClient) GetUser(userId string) (*users.User, error) {
+	user := new(users.User)
+	err := client.Api.Get(fmt.Sprintf("/api/v4/users/%s", userId), user)
+	return user, err
 }
 
 func (client *AmoClient) GetLead(leadId string, query string) (*leads.Lead, error) {
@@ -31,19 +42,12 @@ func (client *AmoClient) GetLead(leadId string, query string) (*leads.Lead, erro
 		resource = resource + "?" + query
 	}
 
-	err := client.api.Get(resource, deal)
+	err := client.Api.Get(resource, deal)
 	return deal, err
 }
 
-func (client *AmoClient) GetUser(userId string) (*users.User, error) {
-	user := new(users.User)
-	err := client.api.Get(fmt.Sprintf("/api/v4/users/%s", userId), user)
-	return user, err
-}
-
 func (client *AmoClient) UpdateLead(lead *leads.Lead) error {
-	err := client.api.Patch(fmt.Sprintf("/api/v4/leads/%d", lead.ID), lead, nil)
-	return err
+	return client.updateEntity("/api/v4/leads", lead.ID, lead)
 }
 
 func (client *AmoClient) GetCompany(companyId string, query string) (*companies.Company, error) {
@@ -53,8 +57,12 @@ func (client *AmoClient) GetCompany(companyId string, query string) (*companies.
 		resource = resource + "?" + query
 	}
 
-	err := client.api.Get(resource, deal)
+	err := client.Api.Get(resource, deal)
 	return deal, err
+}
+
+func (client *AmoClient) UpdateCompany(company *companies.Company) error {
+	return client.updateEntity("/api/v4/contacts", company.ID, company)
 }
 
 func (client *AmoClient) GetContact(contactId string, query string) (*contacts.Contact, error) {
@@ -64,6 +72,10 @@ func (client *AmoClient) GetContact(contactId string, query string) (*contacts.C
 		resource = resource + "?" + query
 	}
 
-	err := client.api.Get(resource, deal)
+	err := client.Api.Get(resource, deal)
 	return deal, err
+}
+
+func (client *AmoClient) UpdateContact(contact *contacts.Contact) error {
+	return client.updateEntity("/api/v4/contacts", contact.ID, contact)
 }
