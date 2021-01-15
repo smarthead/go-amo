@@ -62,7 +62,7 @@ func (client *AmoClient) GetCompany(companyId string, query string) (*companies.
 }
 
 func (client *AmoClient) UpdateCompany(company *companies.Company) error {
-	return client.updateEntity("/api/v4/contacts", company.ID, company)
+	return client.updateEntity("/api/v4/companies", company.ID, company)
 }
 
 func (client *AmoClient) GetContact(contactId string, query string) (*contacts.Contact, error) {
