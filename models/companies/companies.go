@@ -26,6 +26,11 @@ type Links struct {
 	Self Self `json:"self"`
 }
 
+type Contacts struct {
+	ID int `json:"id"`
+}
+
 type Embedded struct {
-	Tags []interface{} `json:"tags"`
+	Tags     []interface{} `json:"tags"`
+	Contacts []*Contacts   `json:"contacts"`
 }
