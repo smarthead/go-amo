@@ -17,8 +17,8 @@ jobs:
         with:
           go-version: '1.16'
       - run: |
-          go test -short -coverprofile=bin/cov.out `go list ./... | grep -v vendor/`
-          go tool cover -func=bin/cov.out
+          go test -short -coverprofile=./cov.out `go list ./... | grep -v vendor/`
+          go tool cover -func=./cov.out
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:
