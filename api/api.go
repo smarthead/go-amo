@@ -10,6 +10,12 @@ import (
 	"net/url"
 )
 
+const (
+	DefaultContentType  = "application/json"
+	DefaultAccept       = DefaultContentType
+	DefaultCacheControl = "no-cache"
+)
+
 type ClientOptions struct {
 	Url          string
 	ClientId     string
@@ -114,11 +120,7 @@ func (api *Client) RefreshToken() (*OauthTokenResponse, error) {
 	err := api.doRequest("/oauth2/access_token", requestOptions{
 		HttpMethod: http.MethodPost,
 		Body:       request,
-		Headers: map[string]string{
-			"Accept":        "application/json",
-			"Cache-Control": "no-cache",
-			"Content-Type":  "application/json",
-		},
+		Headers:    getHeaders(""),
 	}, result)
 
 	return result, err
@@ -128,12 +130,7 @@ func (api *Client) Get(resource string, result interface{}) error {
 	return api.doRequest(resource, requestOptions{
 		HttpMethod: http.MethodGet,
 		Body:       nil,
-		Headers: map[string]string{
-			"Accept":        "application/json",
-			"Cache-Control": "no-cache",
-			"Content-Type":  "application/json",
-			"Authorization": fmt.Sprintf("Bearer %s", api.options.AccessToken),
-		},
+		Headers:    getHeaders(api.options.AccessToken),
 	}, result)
 }
 
@@ -141,12 +138,7 @@ func (api *Client) Post(resource string, request interface{}, result interface{}
 	return api.doRequest(resource, requestOptions{
 		HttpMethod: http.MethodPost,
 		Body:       request,
-		Headers: map[string]string{
-			"Accept":        "application/json",
-			"Cache-Control": "no-cache",
-			"Content-Type":  "application/json",
-			"Authorization": fmt.Sprintf("Bearer %s", api.options.AccessToken),
-		},
+		Headers:    getHeaders(api.options.AccessToken),
 	}, result)
 }
 
@@ -154,11 +146,20 @@ func (api *Client) Patch(resource string, request interface{}, result interface{
 	return api.doRequest(resource, requestOptions{
 		HttpMethod: http.MethodPatch,
 		Body:       request,
-		Headers: map[string]string{
-			"Accept":        "application/json",
-			"Cache-Control": "no-cache",
-			"Content-Type":  "application/json",
-			"Authorization": fmt.Sprintf("Bearer %s", api.options.AccessToken),
-		},
+		Headers:    getHeaders(api.options.AccessToken),
 	}, result)
+}
+
+func getHeaders(token string) map[string]string {
+	headers := map[string]string{
+		"Accept":        DefaultAccept,
+		"Cache-Control": DefaultCacheControl,
+		"Content-Type":  DefaultContentType,
+	}
+
+	if len(token) > 0 {
+		headers["Authorization"] = fmt.Sprintf("Bearer %s", token)
+	}
+
+	return headers
 }
