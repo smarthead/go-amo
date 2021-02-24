@@ -25,6 +25,7 @@ jobs:
           args: >
             -Dsonar.organization=smarthead
             -Dsonar.projectKey=smarthead_go-amo
+            -Dsonar.go.coverage.reportPaths=cov.out
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
