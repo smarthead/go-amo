@@ -1,0 +1,22 @@
+on: push
+name: Testing&Coverage
+jobs:
+  build:
+    name: Compile and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@master
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.16'
+      - run: |
+          go test -coverprofile=bin/cov.out ./...
+          go tool cover -func=bin/cov.out
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+      
