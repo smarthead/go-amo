@@ -19,6 +19,7 @@ jobs:
       - run: |
           go test -short -coverprofile=cov.out `go list ./... | grep -v vendor/`
           go tool cover -func=cov.out
+          ls
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         with:
@@ -26,7 +27,6 @@ jobs:
             -Dsonar.organization=smarthead
             -Dsonar.projectKey=smarthead_go-amo
             -Dsonar.go.coverage.reportPaths=cov.out
-      - run: ls
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
