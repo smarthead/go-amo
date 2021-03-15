@@ -9,33 +9,44 @@ import (
 	"github.com/qdimka/go-amo/models/users"
 )
 
-type AmoClient struct {
+type IAmoClient interface {
+	GetUser(userId string) (*users.User, error)
+	GetLead(leadId string, query string) (*leads.Lead, error)
+	UpdateLead(lead *leads.Lead) error
+	GetCompany(companyId string, query string) (*companies.Company, error)
+	UpdateCompany(company *companies.Company) error
+	GetContact(contactId string, query string) (*contacts.Contact, error)
+	UpdateContact(contact *contacts.Contact) error
+}
+
+type Client struct {
 	Api *api.Client
 }
 
-func NewAmoClient(options *api.ClientOptions) (*AmoClient, error) {
+//goland:noinspection GoUnusedExportedFunction
+func NewAmoClient(options *api.ClientOptions) (*Client, error) {
 	apiClient, err := api.NewClient(options)
 	if err != nil {
 		return nil, err
 	}
 
-	return &AmoClient{
+	return &Client{
 		Api: apiClient,
 	}, nil
 }
 
-func (client *AmoClient) updateEntity(url string, id int, body interface{}) error {
+func (client *Client) updateEntity(url string, id int, body interface{}) error {
 	err := client.Api.Patch(fmt.Sprintf("%s/%d", url, id), body, nil)
 	return err
 }
 
-func (client *AmoClient) GetUser(userId string) (*users.User, error) {
+func (client *Client) GetUser(userId string) (*users.User, error) {
 	user := new(users.User)
 	err := client.Api.Get(fmt.Sprintf("/api/v4/users/%s", userId), user)
 	return user, err
 }
 
-func (client *AmoClient) GetLead(leadId string, query string) (*leads.Lead, error) {
+func (client *Client) GetLead(leadId string, query string) (*leads.Lead, error) {
 	deal := new(leads.Lead)
 	resource := fmt.Sprintf("/api/v4/leads/%s", leadId)
 	if len(query) != 0 {
@@ -46,11 +57,11 @@ func (client *AmoClient) GetLead(leadId string, query string) (*leads.Lead, erro
 	return deal, err
 }
 
-func (client *AmoClient) UpdateLead(lead *leads.Lead) error {
+func (client *Client) UpdateLead(lead *leads.Lead) error {
 	return client.updateEntity("/api/v4/leads", lead.ID, lead)
 }
 
-func (client *AmoClient) GetCompany(companyId string, query string) (*companies.Company, error) {
+func (client *Client) GetCompany(companyId string, query string) (*companies.Company, error) {
 	deal := new(companies.Company)
 	resource := fmt.Sprintf("/api/v4/companies/%s", companyId)
 	if len(query) != 0 {
@@ -61,11 +72,11 @@ func (client *AmoClient) GetCompany(companyId string, query string) (*companies.
 	return deal, err
 }
 
-func (client *AmoClient) UpdateCompany(company *companies.Company) error {
+func (client *Client) UpdateCompany(company *companies.Company) error {
 	return client.updateEntity("/api/v4/companies", company.ID, company)
 }
 
-func (client *AmoClient) GetContact(contactId string, query string) (*contacts.Contact, error) {
+func (client *Client) GetContact(contactId string, query string) (*contacts.Contact, error) {
 	deal := new(contacts.Contact)
 	resource := fmt.Sprintf("/api/v4/contacts/%s", contactId)
 	if len(query) != 0 {
@@ -76,6 +87,6 @@ func (client *AmoClient) GetContact(contactId string, query string) (*contacts.C
 	return deal, err
 }
 
-func (client *AmoClient) UpdateContact(contact *contacts.Contact) error {
+func (client *Client) UpdateContact(contact *contacts.Contact) error {
 	return client.updateEntity("/api/v4/contacts", contact.ID, contact)
 }
